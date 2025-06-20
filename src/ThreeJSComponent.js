@@ -121,6 +121,12 @@ export default function ThreeJSComponent() {
                 "livingarchive"
             )
 
+            const setAxonView = () => {
+                setIframeVisible(false)
+                setHotspotVisible(true)
+                moveCamera(new THREE.Vector3(3.160336262206287, 3.2502142732357107, 3.192687892325))
+            }
+
             const onWindowResize = () => {
                 camera.aspect = window.innerWidth / window.innerHeight
                 camera.updateProjectionMatrix()
