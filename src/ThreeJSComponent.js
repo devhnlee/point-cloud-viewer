@@ -183,7 +183,7 @@ export default function ThreeJSComponent() {
                 raycaster.setFromCamera(mouse, camera)
                 const intersects = raycaster.intersectObjects(models)
 
-                if (intersects.length > 0) {
+                if (intersects.length > 0 && !iframeVisible) {
                     const redirectPath =
                         intersects[0].object.userData.redirectPath
                     if (selectedObject === intersects[0].object) {
