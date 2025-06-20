@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react"
 import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 import { PLYLoader } from "three/addons/loaders/PLYLoader.js"
+import { gsap } from "gsap"
 
 export default function ThreeJSComponent() {
     const containerRef = useRef(null)
@@ -35,7 +36,7 @@ export default function ThreeJSComponent() {
                 0.001,
                 100000
             )
-            camera.position.set(0, 0, 0)
+            camera.position.set(1.2620118298273393, 2.8424242433860067, -0.06559068747381998)
             camera.rotation.set(0.785, 0.11, -0.11)
 
             const renderer = new THREE.WebGLRenderer({ antialias: true })
