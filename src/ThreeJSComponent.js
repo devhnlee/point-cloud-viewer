@@ -71,6 +71,26 @@ export default function ThreeJSComponent() {
                 })
             }
 
+            const moveCamera = (targetPosition) => {
+                const distance = camera.position.distanceTo(targetPosition);
+
+                const baseDuration = 4;
+                const speedFactor = 0.2;
+
+                const duration = baseDuration + (distance * speedFactor);
+
+                gsap.to(camera.position, {
+                    x: targetPosition.x,
+                    y: targetPosition.y,
+                    z: targetPosition.z,
+                    duration: duration,
+                    ease: 'power2.inOut',
+                    onUpdate: () => {
+                        camera.updateProjectionMatrix();
+                    }
+                });
+            }
+
             // Load multiple models
             loadModel(
                 "https://raw.githubusercontent.com/Fredge69/CoAl_Website/main/street_PC.ply",
@@ -215,19 +235,20 @@ export default function ThreeJSComponent() {
             }
             window.addEventListener("dblclick", onMouseDoubleClick)
 
+            const onKeyDown = (event) => {
+                if (event.key === 'c' || event.key === 'C') {
+                    console.log('Camera position:', camera.position);
+                    console.log('Camera rotation:', camera.rotation);
+                }
+            };
+            window.addEventListener('keydown', onKeyDown);
+
             const RedirectSubpage = (path) => {
                 window.location.href = domain + path
             }
 
-            const clock = new THREE.Clock()
             const animate = () => {
                 requestAnimationFrame(animate)
-
-                const elapsedTime = clock.getElapsedTime()
-                if (elapsedTime < 5) {
-                    const t = elapsedTime / 5
-                    camera.position.lerp(new THREE.Vector3(0, -18.7, 9), t)
-                }
 
                 controls.update()
                 renderer.render(scene, camera)
@@ -235,11 +256,14 @@ export default function ThreeJSComponent() {
 
             animate()
 
+            moveCamera(new THREE.Vector3(3.43717175983119, 0.2210791835609916, -0.13036073883462082))
+
             return () => {
                 window.removeEventListener("resize", onWindowResize)
                 window.removeEventListener("mousemove", onMouseMove)
                 window.removeEventListener("click", onMouseClick)
                 window.removeEventListener("dblclick", onMouseDoubleClick)
+                window.removeEventListener("keydown", onKeyDown)
                 if (iframeRef.current) {
                     document.body.removeChild(iframeRef.current)
                 }
