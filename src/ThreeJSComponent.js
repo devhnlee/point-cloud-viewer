@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 import { PLYLoader } from "three/addons/loaders/PLYLoader.js"
@@ -8,7 +8,10 @@ export default function ThreeJSComponent() {
     const containerRef = useRef(null)
     const iframeRef = useRef(null)
     const domain = "https://novel-head-392156.framer.app/"
-    let iframeVisible = false
+    const [iframeVisible, setIframeVisible] = useState(true);
+    const [hotspotPos, setHotspotPos] = useState({ x: 0, y: 0 });
+    const [hotspotVisible, setHotspotVisible] = useState(false);
+    const [hovered, setHovered] = useState(false);
 
     useEffect(() => {
         if (!containerRef.current || containerRef.current.querySelector("canvas")) return; // TODO: need to remove this guard before deployment
@@ -201,14 +204,14 @@ export default function ThreeJSComponent() {
                         }
                         container2.src = domain + redirectPath
                         iframeRef.current.style.display = "block"
-                        iframeVisible = true
+                        setIframeVisible(true)
                         const tempObject = intersects[0].object
                         selectedObject = tempObject
 
                         updateIframeStyle()
                     } else if (redirectPath === "" && iframeRef.current) {
                         iframeRef.current.style.display = "none"
-                        iframeVisible = false
+                        setIframeVisible(false)
                         selectedObject = null
                     }
                 } else {
@@ -216,7 +219,7 @@ export default function ThreeJSComponent() {
                         iframeRef.current.style.display = "none"
                     }
                     selectedObject = null
-                    iframeVisible = false
+                    setIframeVisible(false)
                 }
             }
             window.addEventListener("click", onMouseClick)
@@ -250,6 +253,12 @@ export default function ThreeJSComponent() {
             const animate = () => {
                 requestAnimationFrame(animate)
 
+                // Project 3D point to screen
+                const screenPosition = new THREE.Vector3(0,0,0).clone().project(camera);
+                const x = (screenPosition.x + 1) * 0.5 * window.innerWidth;
+                const y = (-screenPosition.y + 1) * 0.5 * window.innerHeight;
+                setHotspotPos({ x, y });
+
                 controls.update()
                 renderer.render(scene, camera)
             }
@@ -275,5 +284,29 @@ export default function ThreeJSComponent() {
         init()
     }, [])
 
-    return <div ref={containerRef} style={{ width: "100%", height: "100%" }} />
+    return(
+        <div ref={containerRef} style={{ width: "100%", height: "100%" }}>
+            <div
+                className="hotspot"
+                style={{
+                position: "absolute",
+                left: hotspotPos.x,
+                top: hotspotPos.y,
+                width: hovered ? "26px" : "20px",
+                height: hovered ? "26px" : "20px",
+                backgroundColor: hovered ? "orange" : "white",
+                borderRadius: "50%",
+                transform: "translate(-50%, -50%)",
+                cursor: "pointer",
+                zIndex: 10,
+                transition: "all 0.2s ease-in-out",
+                display: hotspotVisible ? "block" : "none",
+                }}
+                onClick={() => console.log("Hotspot clicked")}
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+            />
+            {/* <button onClick={() => {setAxonView()}}></button> */}
+        </div>
+    )
 }
