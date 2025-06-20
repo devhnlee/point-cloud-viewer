@@ -10,6 +10,8 @@ export default function ThreeJSComponent() {
     let iframeVisible = false
 
     useEffect(() => {
+        if (!containerRef.current || containerRef.current.querySelector("canvas")) return; // TODO: need to remove this guard before deployment
+
         // const loadPLYLoader = async () => {
         //     const { PLYLoader } = await import(
         //         "https://unpkg.com/three@0.152.2/examples/jsm/loaders/PLYLoader.js"
