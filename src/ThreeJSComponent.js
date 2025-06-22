@@ -8,10 +8,11 @@ export default function ThreeJSComponent() {
     const containerRef = useRef(null)
     const iframeRef = useRef(null)
     const cameraRef = useRef(null)
-    const domain = "https://novel-head-392156.framer.app/"
     const allModelVisible = useRef(true)
     const iframeVisible = useRef(false)
     const models = useRef([])
+
+    const domain = "https://novel-head-392156.framer.app/"
     const [hotspotVisible, setHotspotVisible] = useState(false)
     const [hotspots, setHotspots] = useState([])
 
@@ -72,13 +73,13 @@ export default function ThreeJSComponent() {
         setHotspotVisible(false)
         moveCamera(new THREE.Vector3(0.1, 0.69, 0.326), new THREE.Vector3(0.8, -0.5, 2.3))
         iframeVisible.current = true
-        const spatialwellness = models.current.find(model => model.userData.redirectPath === "obsm")
-        spatialwellness.material.opacity = 1
-        spatialwellness.material.size = 0.01
-        spatialwellness.material.vertexColors = true
-        spatialwellness.material.needsUpdate = true
+        const obsm = models.current.find(model => model.userData.redirectPath === "obsm")
+        obsm.material.opacity = 1
+        obsm.material.size = 0.01
+        obsm.material.vertexColors = true
+        obsm.material.needsUpdate = true
         models.current.forEach((model) => {
-            if (model !== spatialwellness) {
+            if (model !== obsm) {
                 model.material.opacity = 0.1
                 model.material.size = 0.001
                 model.material.vertexColors = false
@@ -92,13 +93,13 @@ export default function ThreeJSComponent() {
         setHotspotVisible(false)
         moveCamera(new THREE.Vector3(-5.2, 1.65, 0.01), new THREE.Vector3(-4, 1.55, 0))
         iframeVisible.current = true
-        const spatialwellness = models.current.find(model => model.userData.redirectPath === "easypair")
-        spatialwellness.material.opacity = 1
-        spatialwellness.material.size = 0.01
-        spatialwellness.material.vertexColors = true
-        spatialwellness.material.needsUpdate = true
+        const easypair = models.current.find(model => model.userData.redirectPath === "easypair")
+        easypair.material.opacity = 1
+        easypair.material.size = 0.01
+        easypair.material.vertexColors = true
+        easypair.material.needsUpdate = true
         models.current.forEach((model) => {
-            if (model !== spatialwellness) {
+            if (model !== easypair) {
                 model.material.opacity = 0.1
                 model.material.size = 0.001
                 model.material.vertexColors = false
@@ -112,13 +113,13 @@ export default function ThreeJSComponent() {
         setHotspotVisible(false)
         moveCamera(new THREE.Vector3(-1.88, 3.63, 0.28), new THREE.Vector3(-1.5, 1, 1.4))
         iframeVisible.current = true
-        const spatialwellness = models.current.find(model => model.userData.redirectPath === "livingarchive")
-        spatialwellness.material.opacity = 1
-        spatialwellness.material.size = 0.01
-        spatialwellness.material.vertexColors = true
-        spatialwellness.material.needsUpdate = true
+        const livingarchive = models.current.find(model => model.userData.redirectPath === "livingarchive")
+        livingarchive.material.opacity = 1
+        livingarchive.material.size = 0.01
+        livingarchive.material.vertexColors = true
+        livingarchive.material.needsUpdate = true
         models.current.forEach((model) => {
-            if (model !== spatialwellness) {
+            if (model !== livingarchive) {
                 model.material.opacity = 0.1
                 model.material.size = 0.001
                 model.material.vertexColors = false
@@ -233,10 +234,10 @@ export default function ThreeJSComponent() {
             )
 
             const hotspotList = [
-            { label: "spatial wellness", worldPosition: new THREE.Vector3(-0.7, 1.2, -3.58), action: setSpatialWellnessView },
-            { label: "obsm", worldPosition: new THREE.Vector3(0.8, -0.5, 2.3), action: setObsmView },
-            { label: "easy pair", worldPosition: new THREE.Vector3(-4, 1.55, 0), action: setEasypairView },
-            { label: "living archive", worldPosition: new THREE.Vector3(-1.5, 1, 1.4), action: setLivingarchiveView },
+                { label: "spatial wellness", worldPosition: new THREE.Vector3(-0.7, 1.2, -2), action: setSpatialWellnessView },
+                { label: "obsm", worldPosition: new THREE.Vector3(0.8, -0.5, 2.3), action: setObsmView },
+                { label: "easy pair", worldPosition: new THREE.Vector3(-4, 1.55, 0), action: setEasypairView },
+                { label: "living archive", worldPosition: new THREE.Vector3(-1.5, 1, 1.4), action: setLivingarchiveView },
             ]
 
             hotspotList.forEach(({ label, worldPosition, action }) => addHotspot(label, worldPosition, action))
@@ -388,19 +389,19 @@ export default function ThreeJSComponent() {
         <div key={idx}>
             <div
                 style={{
-                position: "absolute",
-                left: hotspot.screenPosition.x,
-                top: hotspot.screenPosition.y,
-                width: hotspot.hovered ? "15px" : "13px",
-                height: hotspot.hovered ? "15px" : "13px",
-                backgroundColor: hotspot.hovered ? "orange" : "#ff6600",
-                boxShadow: hotspot.hovered ? "0 0 10px rgba(255, 102, 0, 0.5)" : "none",
-                border: "2px solid #fff",
-                borderRadius: "50%",
-                transform: "translate(-50%, -50%)",
-                cursor: "pointer",
-                zIndex: 10,
-                display: hotspotVisible ? "block" : "none"
+                    position: "absolute",
+                    left: hotspot.screenPosition.x,
+                    top: hotspot.screenPosition.y,
+                    width: hotspot.hovered ? "15px" : "13px",
+                    height: hotspot.hovered ? "15px" : "13px",
+                    backgroundColor: hotspot.hovered ? "orange" : "#ff6600",
+                    boxShadow: hotspot.hovered ? "0 0 10px rgba(255, 102, 0, 0.5)" : "none",
+                    border: "2px solid #fff",
+                    borderRadius: "50%",
+                    transform: "translate(-50%, -50%)",
+                    cursor: "pointer",
+                    zIndex: 10,
+                    display: hotspotVisible ? "block" : "none"
                 }}
                 onClick={(e) => {
                     e.stopPropagation()
@@ -423,36 +424,36 @@ export default function ThreeJSComponent() {
             />
             <div
                 style={{
-                position: "absolute",
-                left: hotspot.screenPosition.x,
-                top: hotspot.screenPosition.y - 50,
-                transform: "translateX(-50%)",
-                fontFamily: "'Lineal Bold', sans-serif",
-                fontWeight: "bold",
-                fontSize: "16px",
-                color: hotspot.labelHovered ? "#ff6600" : "#fff",
-                backgroundColor: "rgba(0, 0, 0, 0.62)",
-                padding: "4px 8px",
-                borderRadius: "4px",
-                cursor: "pointer",
-                userSelect: "none",
-                zIndex: 10,
-                whiteSpace: "nowrap",
-                display: hotspotVisible ? "block" : "none"
+                    position: "absolute",
+                    left: hotspot.screenPosition.x,
+                    top: hotspot.screenPosition.y - 50,
+                    transform: "translateX(-50%)",
+                    fontFamily: "'Lineal Bold', sans-serif",
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                    color: hotspot.labelHovered ? "#ff6600" : "#fff",
+                    backgroundColor: "rgba(0, 0, 0, 0.62)",
+                    padding: "4px 8px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    userSelect: "none",
+                    zIndex: 10,
+                    whiteSpace: "nowrap",
+                    display: hotspotVisible ? "block" : "none"
                 }}
                 onMouseEnter={() => {
-                setHotspots((prev) => {
-                    const updated = [...prev]
-                    updated[idx].labelHovered = true
-                    return [...updated]
-                })
+                    setHotspots((prev) => {
+                        const updated = [...prev];
+                        updated[idx] = { ...updated[idx], hovered: true }
+                        return updated
+                    })
                 }}
                 onMouseLeave={() => {
-                setHotspots((prev) => {
-                    const updated = [...prev]
-                    updated[idx].labelHovered = false
-                    return [...updated]
-                })
+                    setHotspots((prev) => {
+                        const updated = [...prev];
+                        updated[idx] = { ...updated[idx], hovered: false }
+                        return updated
+                    })
                 }}
                 onClick={(e) => {
                     e.stopPropagation()
@@ -474,7 +475,7 @@ export default function ThreeJSComponent() {
         }}
         onClick={setAxonView}
         >
-        Set Axon View
+            Set Axon View
         </button>
     </div>
     )
