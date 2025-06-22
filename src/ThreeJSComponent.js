@@ -11,20 +11,20 @@ export default function ThreeJSComponent() {
     const domain = "https://novel-head-392156.framer.app/"
     const allModelVisible = useRef(true)
     const iframeVisible = useRef(false)
-    const models = useRef([]);
-    const [hotspotVisible, setHotspotVisible] = useState(false);
-    const [hotspots, setHotspots] = useState([]);
+    const models = useRef([])
+    const [hotspotVisible, setHotspotVisible] = useState(false)
+    const [hotspots, setHotspots] = useState([])
 
-    let hoveredObject = null;
-    let selectedObject = null;
+    let hoveredObject = null
+    let selectedObject = null
 
     const moveCamera = (targetVec3, objectVec3) => {
         if (cameraRef.current) {
-            const camera = cameraRef.current;
-            const distance = camera.position.distanceTo(targetVec3);
-            const baseDuration = 2;
-            const speedFactor = 0.2;
-            const duration = baseDuration + distance * speedFactor;
+            const camera = cameraRef.current
+            const distance = camera.position.distanceTo(targetVec3)
+            const baseDuration = 2
+            const speedFactor = 0.2
+            const duration = baseDuration + distance * speedFactor
 
             gsap.to(camera.position, {
                 x: targetVec3.x,
@@ -33,26 +33,26 @@ export default function ThreeJSComponent() {
                 duration,
                 ease: "power2.inOut",
                 onUpdate: () => {
-                    camera.lookAt(objectVec3);
-                    camera.updateProjectionMatrix();
+                    camera.lookAt(objectVec3)
+                    camera.updateProjectionMatrix()
                 }
-            });
+            })
         }
-    };
+    }
 
-    const addHotspot = (label, worldPosition, viewPosition) => {
+    const addHotspot = (label, worldPosition, action) => {
         setHotspots((prev) => [
         ...prev,
         {
             label,
             worldPosition,
-            viewPosition,
+            action,
             screenPosition: { x: 0, y: 0 },
             hovered: false,
             labelHovered: false,
         },
-        ]);
-    };
+        ])
+    }
 
     const setAxonView = () => {
         allModelVisible.current = false
@@ -60,10 +60,10 @@ export default function ThreeJSComponent() {
         setHotspotVisible(true)
         moveCamera(new THREE.Vector3(3.16, 3.25, 3.2), new THREE.Vector3(0, 0, 0))
         models.current.forEach((model) => {
-            model.material.opacity = 1;
-            model.material.size = 0.01;
+            model.material.opacity = 1
+            model.material.size = 0.01
             model.material.vertexColors = true
-            model.material.needsUpdate = true;
+            model.material.needsUpdate = true
         })
     }
 
@@ -72,17 +72,17 @@ export default function ThreeJSComponent() {
         setHotspotVisible(false)
         moveCamera(new THREE.Vector3(0.1, 0.69, 0.326), new THREE.Vector3(0.8, -0.5, 2.3))
         iframeVisible.current = true
-        const spatialwellness = models.current.find(model => model.userData.redirectPath === "obsm");
+        const spatialwellness = models.current.find(model => model.userData.redirectPath === "obsm")
         spatialwellness.material.opacity = 1
         spatialwellness.material.size = 0.01
         spatialwellness.material.vertexColors = true
         spatialwellness.material.needsUpdate = true
         models.current.forEach((model) => {
             if (model !== spatialwellness) {
-                model.material.opacity = 0.1;
-                model.material.size = 0.001;
+                model.material.opacity = 0.1
+                model.material.size = 0.001
                 model.material.vertexColors = false
-                model.material.needsUpdate = true;
+                model.material.needsUpdate = true
             }
         })
     }
@@ -92,17 +92,17 @@ export default function ThreeJSComponent() {
         setHotspotVisible(false)
         moveCamera(new THREE.Vector3(-5.2, 1.65, 0.01), new THREE.Vector3(-4, 1.55, 0))
         iframeVisible.current = true
-        const spatialwellness = models.current.find(model => model.userData.redirectPath === "easypair");
+        const spatialwellness = models.current.find(model => model.userData.redirectPath === "easypair")
         spatialwellness.material.opacity = 1
         spatialwellness.material.size = 0.01
         spatialwellness.material.vertexColors = true
         spatialwellness.material.needsUpdate = true
         models.current.forEach((model) => {
             if (model !== spatialwellness) {
-                model.material.opacity = 0.1;
-                model.material.size = 0.001;
+                model.material.opacity = 0.1
+                model.material.size = 0.001
                 model.material.vertexColors = false
-                model.material.needsUpdate = true;
+                model.material.needsUpdate = true
             }
         })
     }
@@ -112,17 +112,17 @@ export default function ThreeJSComponent() {
         setHotspotVisible(false)
         moveCamera(new THREE.Vector3(-1.88, 3.63, 0.28), new THREE.Vector3(-1.5, 1, 1.4))
         iframeVisible.current = true
-        const spatialwellness = models.current.find(model => model.userData.redirectPath === "livingarchive");
+        const spatialwellness = models.current.find(model => model.userData.redirectPath === "livingarchive")
         spatialwellness.material.opacity = 1
         spatialwellness.material.size = 0.01
         spatialwellness.material.vertexColors = true
         spatialwellness.material.needsUpdate = true
         models.current.forEach((model) => {
             if (model !== spatialwellness) {
-                model.material.opacity = 0.1;
-                model.material.size = 0.001;
+                model.material.opacity = 0.1
+                model.material.size = 0.001
                 model.material.vertexColors = false
-                model.material.needsUpdate = true;
+                model.material.needsUpdate = true
             }
         })
     }
@@ -132,23 +132,23 @@ export default function ThreeJSComponent() {
         setHotspotVisible(false)
         moveCamera(new THREE.Vector3(-0.7, 1.2, -3.58), new THREE.Vector3(-0.6, 0.75, -1.25))
         iframeVisible.current = true
-        const spatialwellness = models.current.find(model => model.userData.redirectPath === "spatialwellness");
+        const spatialwellness = models.current.find(model => model.userData.redirectPath === "spatialwellness")
         spatialwellness.material.opacity = 1
         spatialwellness.material.size = 0.01
         spatialwellness.material.vertexColors = true
         spatialwellness.material.needsUpdate = true
         models.current.forEach((model) => {
             if (model !== spatialwellness) {
-                model.material.opacity = 0.1;
-                model.material.size = 0.001;
+                model.material.opacity = 0.1
+                model.material.size = 0.001
                 model.material.vertexColors = false
-                model.material.needsUpdate = true;
+                model.material.needsUpdate = true
             }
         })
     }
 
     useEffect(() => {
-        if (!containerRef.current || containerRef.current.querySelector("canvas")) return; // TODO: need to remove this guard before deployment
+        if (!containerRef.current || containerRef.current.querySelector("canvas")) return // TODO: need to remove this guard before deployment
 
         // const loadPLYLoader = async () => {
         //     const { PLYLoader } = await import(
@@ -174,7 +174,7 @@ export default function ThreeJSComponent() {
                 100000
             )
             camera.position.set(1.26, 2.84, -0.065)
-            cameraRef.current = camera;
+            cameraRef.current = camera
 
             const renderer = new THREE.WebGLRenderer({ antialias: true })
             renderer.setSize(window.innerWidth, window.innerHeight)
@@ -201,7 +201,7 @@ export default function ThreeJSComponent() {
                     object.position.copy(position)
                     object.userData.redirectPath = redirectPath
                     scene.add(object)
-                    models.current.push(object);
+                    models.current.push(object)
                 })
             }
 
@@ -233,13 +233,13 @@ export default function ThreeJSComponent() {
             )
 
             const hotspotList = [
-            { label: "spatial wellness", worldPosition: new THREE.Vector3(-0.7, 1.2, -3.58), viewPosition: new THREE.Vector3(-0.54, 0.74, -3.58) },
-            { label: "obsm", worldPosition: new THREE.Vector3(0.8, -0.5, 2.3), viewPosition: new THREE.Vector3(0.1, 0.69, 0.326) },
-            { label: "easy pair", worldPosition: new THREE.Vector3(-4, 1.55, 0), viewPosition: new THREE.Vector3(-5.2, 1.65, 0.01) },
-            { label: "living archive", worldPosition: new THREE.Vector3(-1.5, 1, 1.4), viewPosition: new THREE.Vector3(-1.88, 3.63, 0.28) },
-            ];
+            { label: "spatial wellness", worldPosition: new THREE.Vector3(-0.7, 1.2, -3.58), action: setSpatialWellnessView },
+            { label: "obsm", worldPosition: new THREE.Vector3(0.8, -0.5, 2.3), action: setObsmView },
+            { label: "easy pair", worldPosition: new THREE.Vector3(-4, 1.55, 0), action: setEasypairView },
+            { label: "living archive", worldPosition: new THREE.Vector3(-1.5, 1, 1.4), action: setLivingarchiveView },
+            ]
 
-            hotspotList.forEach(({ label, worldPosition, viewPosition }) => addHotspot(label, worldPosition, viewPosition));
+            hotspotList.forEach(({ label, worldPosition, action }) => addHotspot(label, worldPosition, action))
 
             window.addEventListener("resize", () => {
                 camera.aspect = window.innerWidth / window.innerHeight
@@ -333,10 +333,10 @@ export default function ThreeJSComponent() {
 
             window.addEventListener('keydown', (event) => {
                 if (event.key === 'c' || event.key === 'C') {
-                    console.log('Camera position:', camera.position);
-                    console.log('Camera rotation:', camera.rotation);
+                    console.log('Camera position:', camera.position)
+                    console.log('Camera rotation:', camera.rotation)
                 }
-            });
+            })
 
             const RedirectSubpage = (path) => {
                 window.location.href = domain + path
@@ -347,12 +347,12 @@ export default function ThreeJSComponent() {
 
                 setHotspots((prev) =>
                     prev.map((hotspot) => {
-                        const screenPosition = hotspot.worldPosition.clone().project(camera);
-                        const x = (screenPosition.x + 1) * 0.5 * window.innerWidth;
-                        const y = (-screenPosition.y + 1) * 0.5 * window.innerHeight;
-                        return { ...hotspot, screenPosition: { x, y } };
+                        const screenPosition = hotspot.worldPosition.clone().project(camera)
+                        const x = (screenPosition.x + 1) * 0.5 * window.innerWidth
+                        const y = (-screenPosition.y + 1) * 0.5 * window.innerHeight
+                        return { ...hotspot, screenPosition: { x, y } }
                     })
-                );
+                )
 
                 controls.update()
                 renderer.render(scene, camera)
@@ -402,20 +402,23 @@ export default function ThreeJSComponent() {
                 zIndex: 10,
                 display: hotspotVisible ? "block" : "none"
                 }}
-                onClick={() => moveCamera(hotspot.viewPosition, hotspot.worldPosition)}
+                onClick={(e) => {
+                    e.stopPropagation()
+                    hotspot.action()
+                }}
                 onMouseEnter={() => {
                 setHotspots((prev) => {
                     const updated = [...prev];
-                    updated[idx].hovered = true;
-                    return [...updated];
-                });
+                    updated[idx] = { ...updated[idx], hovered: true }
+                    return updated
+                })
                 }}
                 onMouseLeave={() => {
                 setHotspots((prev) => {
                     const updated = [...prev];
-                    updated[idx].hovered = false;
-                    return [...updated];
-                });
+                    updated[idx] = { ...updated[idx], hovered: false }
+                    return updated
+                })
                 }}
             />
             <div
@@ -439,19 +442,22 @@ export default function ThreeJSComponent() {
                 }}
                 onMouseEnter={() => {
                 setHotspots((prev) => {
-                    const updated = [...prev];
-                    updated[idx].labelHovered = true;
-                    return [...updated];
-                });
+                    const updated = [...prev]
+                    updated[idx].labelHovered = true
+                    return [...updated]
+                })
                 }}
                 onMouseLeave={() => {
                 setHotspots((prev) => {
-                    const updated = [...prev];
-                    updated[idx].labelHovered = false;
-                    return [...updated];
-                });
+                    const updated = [...prev]
+                    updated[idx].labelHovered = false
+                    return [...updated]
+                })
                 }}
-                onClick={() => moveCamera(hotspot.viewPosition, hotspot.worldPosition)}
+                onClick={(e) => {
+                    e.stopPropagation()
+                    hotspot.action()
+                }}
             >
                 {hotspot.label}
             </div>
@@ -470,19 +476,7 @@ export default function ThreeJSComponent() {
         >
         Set Axon View
         </button>
-        <button
-        style={{
-            position: "absolute",
-            bottom: "500px",
-            left: "20px",
-            zIndex: 11,
-            padding: "10px 16px",
-        }}
-        onClick={setSpatialWellnessView}
-        >
-        Set Spatialwellness View
-        </button>
     </div>
-    );
+    )
 
 }
