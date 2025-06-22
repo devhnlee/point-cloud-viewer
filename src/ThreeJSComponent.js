@@ -68,24 +68,28 @@ export default function ThreeJSComponent() {
         })
     }
 
-    const setObsmView = () => {
-        allModelVisible.current = true
-        setHotspotVisible(false)
-        moveCamera(new THREE.Vector3(0.1, 0.69, 0.326), new THREE.Vector3(0.8, -0.5, 2.3))
-        iframeVisible.current = true
-        const obsm = models.current.find(model => model.userData.redirectPath === "obsm")
-        obsm.material.opacity = 1
-        obsm.material.size = 0.01
-        obsm.material.vertexColors = true
-        obsm.material.needsUpdate = true
+    const updateMaterial = (target) => {
+        target.material.opacity = 1
+        target.material.size = 0.01
+        target.material.vertexColors = true
+        target.material.needsUpdate = true
         models.current.forEach((model) => {
-            if (model !== obsm) {
+            if (model !== target) {
                 model.material.opacity = 0.1
                 model.material.size = 0.001
                 model.material.vertexColors = false
                 model.material.needsUpdate = true
             }
         })
+    }
+
+    const setObsmView = () => {
+        allModelVisible.current = true
+        setHotspotVisible(false)
+        moveCamera(new THREE.Vector3(0.1, 0.69, 0.326), new THREE.Vector3(0.8, -0.5, 2.3))
+        iframeVisible.current = true
+        const obsm = models.current.find(model => model.userData.redirectPath === "obsm")
+        updateMaterial(obsm)
     }
 
     const setEasypairView = () => {
@@ -94,18 +98,7 @@ export default function ThreeJSComponent() {
         moveCamera(new THREE.Vector3(-5.2, 1.65, 0.01), new THREE.Vector3(-4, 1.55, 0))
         iframeVisible.current = true
         const easypair = models.current.find(model => model.userData.redirectPath === "easypair")
-        easypair.material.opacity = 1
-        easypair.material.size = 0.01
-        easypair.material.vertexColors = true
-        easypair.material.needsUpdate = true
-        models.current.forEach((model) => {
-            if (model !== easypair) {
-                model.material.opacity = 0.1
-                model.material.size = 0.001
-                model.material.vertexColors = false
-                model.material.needsUpdate = true
-            }
-        })
+        updateMaterial(easypair)
     }
 
     const setLivingarchiveView = () => {
@@ -114,18 +107,7 @@ export default function ThreeJSComponent() {
         moveCamera(new THREE.Vector3(-1.88, 3.63, 0.28), new THREE.Vector3(-1.5, 1, 1.4))
         iframeVisible.current = true
         const livingarchive = models.current.find(model => model.userData.redirectPath === "livingarchive")
-        livingarchive.material.opacity = 1
-        livingarchive.material.size = 0.01
-        livingarchive.material.vertexColors = true
-        livingarchive.material.needsUpdate = true
-        models.current.forEach((model) => {
-            if (model !== livingarchive) {
-                model.material.opacity = 0.1
-                model.material.size = 0.001
-                model.material.vertexColors = false
-                model.material.needsUpdate = true
-            }
-        })
+        updateMaterial(livingarchive)
     }
 
     const setSpatialWellnessView = () => {
@@ -134,18 +116,7 @@ export default function ThreeJSComponent() {
         moveCamera(new THREE.Vector3(-0.7, 1.2, -3.58), new THREE.Vector3(-0.6, 0.75, -1.25))
         iframeVisible.current = true
         const spatialwellness = models.current.find(model => model.userData.redirectPath === "spatialwellness")
-        spatialwellness.material.opacity = 1
-        spatialwellness.material.size = 0.01
-        spatialwellness.material.vertexColors = true
-        spatialwellness.material.needsUpdate = true
-        models.current.forEach((model) => {
-            if (model !== spatialwellness) {
-                model.material.opacity = 0.1
-                model.material.size = 0.001
-                model.material.vertexColors = false
-                model.material.needsUpdate = true
-            }
-        })
+        updateMaterial(spatialwellness)
     }
 
     useEffect(() => {
