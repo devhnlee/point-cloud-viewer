@@ -41,20 +41,6 @@ export default function ThreeJSComponent() {
         }
     }
 
-    const addHotspot = (label, worldPosition, action) => {
-        setHotspots((prev) => [
-        ...prev,
-        {
-            label,
-            worldPosition,
-            action,
-            screenPosition: { x: 0, y: 0 },
-            hovered: false,
-            labelHovered: false,
-        },
-        ])
-    }
-
     const setAxonView = () => {
         allModelVisible.current = false
         iframeVisible.current = false
@@ -211,6 +197,20 @@ export default function ThreeJSComponent() {
                 { label: "living archive", worldPosition: new THREE.Vector3(-1.5, 1, 1.4), action: setLivingarchiveView },
             ]
 
+            const addHotspot = (label, worldPosition, action) => {
+                setHotspots((prev) => [
+                ...prev,
+                {
+                    label,
+                    worldPosition,
+                    action,
+                    screenPosition: { x: 0, y: 0 },
+                    hovered: false,
+                    labelHovered: false,
+                },
+                ])
+            }
+
             hotspotList.forEach(({ label, worldPosition, action }) => addHotspot(label, worldPosition, action))
 
             window.addEventListener("resize", () => {
@@ -236,6 +236,7 @@ export default function ThreeJSComponent() {
                 mouse.y = -(event.clientY / window.innerHeight) * 2 + 1.3
 
                 if (allModelVisible.current) return
+
                 raycaster.setFromCamera(mouse, camera)
                 const intersects = raycaster.intersectObjects(models.current)
 
@@ -268,6 +269,7 @@ export default function ThreeJSComponent() {
                 const intersects = raycaster.intersectObjects(models.current)
 
                 if (!iframeVisible.current) return
+
                 if (iframeRef.current) {
                     iframeRef.current.style.display = "none"
                     selectedObject = null
@@ -297,16 +299,7 @@ export default function ThreeJSComponent() {
                         selectedObject = tempObject
 
                         updateIframeStyle()
-                    } else {
-                        return
                     }
-                }
-            })
-
-            window.addEventListener('keydown', (event) => {
-                if (event.key === 'c' || event.key === 'C') {
-                    console.log('Camera position:', camera.position)
-                    console.log('Camera rotation:', camera.rotation)
                 }
             })
 
@@ -338,7 +331,6 @@ export default function ThreeJSComponent() {
                 window.removeEventListener("resize")
                 window.removeEventListener("mousemove")
                 window.removeEventListener("click")
-                window.removeEventListener("keydown")
                 if (iframeRef.current) {
                     document.body.removeChild(iframeRef.current)
                 }
@@ -352,10 +344,8 @@ export default function ThreeJSComponent() {
 
     return (
     <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
-        {/* Three.js mount point */}
         <div ref={containerRef} style={{ width: "100%", height: "100%" }} />
 
-        {/* Hotspot UI */}
         {hotspots.map((hotspot, idx) => (
         <div key={idx}>
             <div
