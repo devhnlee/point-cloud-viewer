@@ -31,7 +31,7 @@ export default function ThreeJSComponent() {
                 duration,
                 ease: "power2.inOut",
                 onUpdate: () => {
-                    camera.lookAt(objectVec3.x, objectVec3.y, objectVec3.z);
+                    camera.lookAt(objectVec3);
                     camera.updateProjectionMatrix();
                 }
             });
@@ -146,10 +146,10 @@ export default function ThreeJSComponent() {
             )
 
             const hotspotList = [
-            { label: "spatial wellness", worldPosition: new THREE.Vector3(0, 1, 0), viewPosition: new THREE.Vector3(-0.54, 0.74, -3.58) },
-            { label: "obsm", worldPosition: new THREE.Vector3(1, 2, 1), viewPosition: new THREE.Vector3(0.1, 0.69, 0.326) },
-            { label: "easy pair", worldPosition: new THREE.Vector3(-1, 2, 1), viewPosition: new THREE.Vector3(-1.76, 1.65, 0.177) },
-            { label: "living archive", worldPosition: new THREE.Vector3(1, -2, 1), viewPosition: new THREE.Vector3(-1.58, 1.96, 0.13) },
+            { label: "spatial wellness", worldPosition: new THREE.Vector3(-0.6, 0.75, -1.25), viewPosition: new THREE.Vector3(-0.54, 0.74, -3.58) },
+            { label: "obsm", worldPosition: new THREE.Vector3(0.8, -0.5, 2.3), viewPosition: new THREE.Vector3(0.1, 0.69, 0.326) },
+            { label: "easy pair", worldPosition: new THREE.Vector3(-4, 1.55, 0), viewPosition: new THREE.Vector3(-5.2, 1.65, 0.01) },
+            { label: "living archive", worldPosition: new THREE.Vector3(-1.5, 1, 1.4), viewPosition: new THREE.Vector3(-1.88, 3.63, 0.28) },
             ];
 
             hotspotList.forEach(({ label, worldPosition, viewPosition }) => addHotspot(label, worldPosition, viewPosition));
@@ -174,7 +174,7 @@ export default function ThreeJSComponent() {
 
             window.addEventListener("mousemove", (event) => {
                 mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1.3
 
                 if (iframeVisible.current) return
                 raycaster.setFromCamera(mouse, camera)
@@ -315,9 +315,11 @@ export default function ThreeJSComponent() {
                 position: "absolute",
                 left: hotspot.screenPosition.x,
                 top: hotspot.screenPosition.y,
-                width: hotspot.hovered ? "20px" : "15px",
-                height: hotspot.hovered ? "20px" : "15px",
-                backgroundColor: hotspot.hovered ? "orange" : "white",
+                width: hotspot.hovered ? "15px" : "13px",
+                height: hotspot.hovered ? "15px" : "13px",
+                backgroundColor: hotspot.hovered ? "orange" : "#ff6600",
+                boxShadow: hotspot.hovered ? "0 0 10px rgba(255, 102, 0, 0.5)" : "none",
+                border: "2px solid #fff",
                 borderRadius: "50%",
                 transform: "translate(-50%, -50%)",
                 cursor: "pointer",
@@ -350,7 +352,7 @@ export default function ThreeJSComponent() {
                 fontWeight: "bold",
                 fontSize: "16px",
                 color: hotspot.labelHovered ? "#ff6600" : "#fff",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                backgroundColor: "rgba(0, 0, 0, 0.62)",
                 padding: "4px 8px",
                 borderRadius: "4px",
                 cursor: "pointer",
