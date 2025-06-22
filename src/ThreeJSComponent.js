@@ -53,9 +53,96 @@ export default function ThreeJSComponent() {
     };
 
     const setAxonView = () => {
+        allModelVisible.current = false
         iframeVisible.current = false
         setHotspotVisible(true)
         moveCamera(new THREE.Vector3(3.16, 3.25, 3.2), new THREE.Vector3(0, 0, 0))
+        models.current.forEach((model) => {
+            model.material.opacity = 1;
+            model.material.size = 0.01;
+            model.material.vertexColors = true
+            model.material.needsUpdate = true;
+        })
+    }
+
+    const setObsmView = () => {
+        allModelVisible.current = true
+        setHotspotVisible(false)
+        moveCamera(new THREE.Vector3(0.1, 0.69, 0.326), new THREE.Vector3(0.8, -0.5, 2.3))
+        iframeVisible.current = true
+        const spatialwellness = models.current.find(model => model.userData.redirectPath === "obsm");
+        spatialwellness.material.opacity = 1
+        spatialwellness.material.size = 0.01
+        spatialwellness.material.vertexColors = true
+        spatialwellness.material.needsUpdate = true
+        models.current.forEach((model) => {
+            if (model !== spatialwellness) {
+                model.material.opacity = 0.1;
+                model.material.size = 0.001;
+                model.material.vertexColors = false
+                model.material.needsUpdate = true;
+            }
+        })
+    }
+
+    const setEasypairView = () => {
+        allModelVisible.current = true
+        setHotspotVisible(false)
+        moveCamera(new THREE.Vector3(-5.2, 1.65, 0.01), new THREE.Vector3(-4, 1.55, 0))
+        iframeVisible.current = true
+        const spatialwellness = models.current.find(model => model.userData.redirectPath === "easypair");
+        spatialwellness.material.opacity = 1
+        spatialwellness.material.size = 0.01
+        spatialwellness.material.vertexColors = true
+        spatialwellness.material.needsUpdate = true
+        models.current.forEach((model) => {
+            if (model !== spatialwellness) {
+                model.material.opacity = 0.1;
+                model.material.size = 0.001;
+                model.material.vertexColors = false
+                model.material.needsUpdate = true;
+            }
+        })
+    }
+
+    const setLivingarchiveView = () => {
+        allModelVisible.current = true
+        setHotspotVisible(false)
+        moveCamera(new THREE.Vector3(-1.88, 3.63, 0.28), new THREE.Vector3(-1.5, 1, 1.4))
+        iframeVisible.current = true
+        const spatialwellness = models.current.find(model => model.userData.redirectPath === "livingarchive");
+        spatialwellness.material.opacity = 1
+        spatialwellness.material.size = 0.01
+        spatialwellness.material.vertexColors = true
+        spatialwellness.material.needsUpdate = true
+        models.current.forEach((model) => {
+            if (model !== spatialwellness) {
+                model.material.opacity = 0.1;
+                model.material.size = 0.001;
+                model.material.vertexColors = false
+                model.material.needsUpdate = true;
+            }
+        })
+    }
+
+    const setSpatialWellnessView = () => {
+        allModelVisible.current = true
+        setHotspotVisible(false)
+        moveCamera(new THREE.Vector3(-0.7, 1.2, -3.58), new THREE.Vector3(-0.6, 0.75, -1.25))
+        iframeVisible.current = true
+        const spatialwellness = models.current.find(model => model.userData.redirectPath === "spatialwellness");
+        spatialwellness.material.opacity = 1
+        spatialwellness.material.size = 0.01
+        spatialwellness.material.vertexColors = true
+        spatialwellness.material.needsUpdate = true
+        models.current.forEach((model) => {
+            if (model !== spatialwellness) {
+                model.material.opacity = 0.1;
+                model.material.size = 0.001;
+                model.material.vertexColors = false
+                model.material.needsUpdate = true;
+            }
+        })
     }
 
     useEffect(() => {
@@ -100,7 +187,6 @@ export default function ThreeJSComponent() {
             const raycaster = new THREE.Raycaster()
             const mouse = new THREE.Vector2()
 
-            const models = []
 
             const loadModel = (path, position, redirectPath = "") => {
                 const loader = new PLYLoader()
@@ -114,7 +200,7 @@ export default function ThreeJSComponent() {
                     object.position.copy(position)
                     object.userData.redirectPath = redirectPath
                     scene.add(object)
-                    models.push(object)
+                    models.current.push(object);
                 })
             }
 
@@ -176,9 +262,9 @@ export default function ThreeJSComponent() {
                 mouse.x = (event.clientX / window.innerWidth) * 2 - 1
                 mouse.y = -(event.clientY / window.innerHeight) * 2 + 1.3
 
-                if (iframeVisible.current) return
+                if (allModelVisible.current) return
                 raycaster.setFromCamera(mouse, camera)
-                const intersects = raycaster.intersectObjects(models)
+                const intersects = raycaster.intersectObjects(models.current)
 
                 if (intersects.length > 0) {
                     if (hoveredObject !== intersects[0].object) {
@@ -187,7 +273,7 @@ export default function ThreeJSComponent() {
 
                         hoveredObject.material.opacity = 1
                         hoveredObject.material.vertexColors = true
-                        models.forEach((model) => {
+                        models.current.forEach((model) => {
                             if (model !== hoveredObject) {
                                 model.material.size = 0.001
                                 model.material.opacity = 0.1
@@ -196,7 +282,7 @@ export default function ThreeJSComponent() {
                         })
                     }
                 } else if (hoveredObject) {
-                    models.forEach((model) => {
+                    models.current.forEach((model) => {
                         model.material.size = 0.01
                         model.material.opacity = 1
                     })
@@ -300,7 +386,7 @@ export default function ThreeJSComponent() {
         }
 
         init()
-    }, [iframeVisible])
+    }, [])
 
     return (
     <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
@@ -393,6 +479,18 @@ export default function ThreeJSComponent() {
         onClick={setAxonView}
         >
         Set Axon View
+        </button>
+        <button
+        style={{
+            position: "absolute",
+            bottom: "500px",
+            left: "20px",
+            zIndex: 11,
+            padding: "10px 16px",
+        }}
+        onClick={setSpatialWellnessView}
+        >
+        Set Spatialwellness View
         </button>
     </div>
     );
