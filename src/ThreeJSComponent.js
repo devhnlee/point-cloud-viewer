@@ -9,7 +9,9 @@ export default function ThreeJSComponent() {
     const iframeRef = useRef(null)
     const cameraRef = useRef(null)
     const domain = "https://novel-head-392156.framer.app/"
-    const iframeVisible = useRef(true)
+    const allModelVisible = useRef(true)
+    const iframeVisible = useRef(false)
+    const models = useRef([]);
     const [hotspotVisible, setHotspotVisible] = useState(false);
     const [hotspots, setHotspots] = useState([]);
 
@@ -172,7 +174,6 @@ export default function ThreeJSComponent() {
                 100000
             )
             camera.position.set(1.26, 2.84, -0.065)
-            camera.rotation.set(0.785, 0.11, -0.11)
             cameraRef.current = camera;
 
             const renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -232,7 +233,7 @@ export default function ThreeJSComponent() {
             )
 
             const hotspotList = [
-            { label: "spatial wellness", worldPosition: new THREE.Vector3(-0.6, 0.75, -1.25), viewPosition: new THREE.Vector3(-0.54, 0.74, -3.58) },
+            { label: "spatial wellness", worldPosition: new THREE.Vector3(-0.7, 1.2, -3.58), viewPosition: new THREE.Vector3(-0.54, 0.74, -3.58) },
             { label: "obsm", worldPosition: new THREE.Vector3(0.8, -0.5, 2.3), viewPosition: new THREE.Vector3(0.1, 0.69, 0.326) },
             { label: "easy pair", worldPosition: new THREE.Vector3(-4, 1.55, 0), viewPosition: new THREE.Vector3(-5.2, 1.65, 0.01) },
             { label: "living archive", worldPosition: new THREE.Vector3(-1.5, 1, 1.4), viewPosition: new THREE.Vector3(-1.88, 3.63, 0.28) },
@@ -290,56 +291,45 @@ export default function ThreeJSComponent() {
                 }
             })
 
-            // const onMouseClick = (event) => {
-            //     raycaster.setFromCamera(mouse, camera)
-            //     const intersects = raycaster.intersectObjects(models)
+            window.addEventListener("click", (event) => {
+                raycaster.setFromCamera(mouse, camera)
+                const intersects = raycaster.intersectObjects(models.current)
 
-            //     if (intersects.length > 0 && !iframeVisible) {
-            //         const redirectPath =
-            //             intersects[0].object.userData.redirectPath
-            //         if (selectedObject === intersects[0].object) {
-            //             window.location.href = domain + redirectPath
-            //             return
-            //         }
-            //         let container2 = document.createElement("iframe")
-            //         if (redirectPath !== "" && !selectedObject) {
-            //             if (!iframeRef.current) {
-            //                 iframeRef.current = document.createElement("div")
-            //                 iframeRef.current.appendChild(container2)
-            //                 container2.style.width = "100%"
-            //                 container2.style.height = "100%"
-            //                 iframeRef.current.setAttribute(
-            //                     "id",
-            //                     "subpage_iframe"
-            //                 )
-            //                 iframeRef.current.style.position = "fixed"
-            //                 iframeRef.current.style.border = "1px solid #ccc"
-            //                 iframeRef.current.style.boxShadow =
-            //                     "0 4px 8px rgba(0, 0, 0, 0.1)"
-            //                 iframeRef.current.style.zIndex = "1000"
-            //                 document.body.appendChild(iframeRef.current)
-            //             }
-            //             container2.src = domain + redirectPath
-            //             iframeRef.current.style.display = "block"
-            //             setIframeVisible(true)
-            //             const tempObject = intersects[0].object
-            //             selectedObject = tempObject
+                if (!iframeVisible.current) return
+                if (iframeRef.current) {
+                    iframeRef.current.style.display = "none"
+                    selectedObject = null
+                    iframeRef.current = null
+                } else if (intersects.length > 0) {
+                    const redirectPath = intersects[0].object.userData.redirectPath
+                    let container2 = document.createElement("iframe")
+                    if (redirectPath !== "") {
+                        iframeRef.current = document.createElement("div")
+                        iframeRef.current.appendChild(container2)
+                        container2.style.width = "100%"
+                        container2.style.height = "100%"
+                        iframeRef.current.setAttribute(
+                            "id",
+                            "subpage_iframe"
+                        )
+                        iframeRef.current.style.opacity = "0.8"
+                        iframeRef.current.style.position = "fixed"
+                        iframeRef.current.style.border = "1px solid #ccc"
+                        iframeRef.current.style.boxShadow =
+                            "0 4px 8px rgba(0, 0, 0, 0.1)"
+                        iframeRef.current.style.zIndex = "1000"
+                        document.body.appendChild(iframeRef.current)
+                        container2.src = domain + redirectPath
+                        iframeRef.current.style.display = "block"
+                        const tempObject = intersects[0].object
+                        selectedObject = tempObject
 
-            //             updateIframeStyle()
-            //         } else if (redirectPath === "" && iframeRef.current) {
-            //             iframeRef.current.style.display = "none"
-            //             setIframeVisible(false)
-            //             selectedObject = null
-            //         }
-            //     } else {
-            //         if (iframeRef.current) {
-            //             iframeRef.current.style.display = "none"
-            //         }
-            //         selectedObject = null
-            //         setIframeVisible(true)
-            //     }
-            // }
-            // window.addEventListener("click", onMouseClick)
+                        updateIframeStyle()
+                    } else {
+                        return
+                    }
+                }
+            })
 
             window.addEventListener('keydown', (event) => {
                 if (event.key === 'c' || event.key === 'C') {
@@ -375,7 +365,7 @@ export default function ThreeJSComponent() {
             return () => {
                 window.removeEventListener("resize")
                 window.removeEventListener("mousemove")
-                // window.removeEventListener("click", onMouseClick)
+                window.removeEventListener("click")
                 window.removeEventListener("keydown")
                 if (iframeRef.current) {
                     document.body.removeChild(iframeRef.current)
