@@ -257,27 +257,12 @@ export default function ThreeJSComponent() {
             // }
             // window.addEventListener("click", onMouseClick)
 
-            const onMouseDoubleClick = (event) => {
-                raycaster.setFromCamera(mouse, camera)
-                const intersects = raycaster.intersectObjects(models)
-
-                if (intersects.length > 0) {
-                    const redirectPath =
-                        intersects[0].object.userData.redirectPath
-                    if (redirectPath !== "") {
-                        window.location.href = domain + redirectPath
-                    }
-                }
-            }
-            window.addEventListener("dblclick", onMouseDoubleClick)
-
-            const onKeyDown = (event) => {
+            window.addEventListener('keydown', (event) => {
                 if (event.key === 'c' || event.key === 'C') {
                     console.log('Camera position:', camera.position);
                     console.log('Camera rotation:', camera.rotation);
                 }
-            };
-            window.addEventListener('keydown', onKeyDown);
+            });
 
             const RedirectSubpage = (path) => {
                 window.location.href = domain + path
@@ -307,7 +292,6 @@ export default function ThreeJSComponent() {
                 window.removeEventListener("resize", onWindowResize)
                 window.removeEventListener("mousemove", onMouseMove)
                 // window.removeEventListener("click", onMouseClick)
-                window.removeEventListener("dblclick", onMouseDoubleClick)
                 window.removeEventListener("keydown", onKeyDown)
                 if (iframeRef.current) {
                     document.body.removeChild(iframeRef.current)
