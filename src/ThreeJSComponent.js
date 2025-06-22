@@ -13,6 +13,9 @@ export default function ThreeJSComponent() {
     const [hotspotVisible, setHotspotVisible] = useState(false);
     const [hotspots, setHotspots] = useState([]);
 
+    let hoveredObject = null;
+    let selectedObject = null;
+
     const moveCamera = (targetVec3, objectVec3) => {
         if (cameraRef.current) {
             const camera = cameraRef.current;
