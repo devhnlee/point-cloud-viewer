@@ -154,13 +154,12 @@ export default function ThreeJSComponent() {
 
             hotspotList.forEach(({ label, worldPosition, viewPosition }) => addHotspot(label, worldPosition, viewPosition));
 
-            const onWindowResize = () => {
+            window.addEventListener("resize", () => {
                 camera.aspect = window.innerWidth / window.innerHeight
                 camera.updateProjectionMatrix()
                 renderer.setSize(window.innerWidth, window.innerHeight)
                 updateIframeStyle()
-            }
-            window.addEventListener("resize", onWindowResize)
+            })
 
             const updateIframeStyle = () => {
                 if (iframeRef.current) {
@@ -173,7 +172,7 @@ export default function ThreeJSComponent() {
                 }
             }
 
-            const onMouseMove = (event) => {
+            window.addEventListener("mousemove", (event) => {
                 mouse.x = (event.clientX / window.innerWidth) * 2 - 1
                 mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
 
@@ -203,8 +202,7 @@ export default function ThreeJSComponent() {
                     })
                     hoveredObject = null
                 }
-            }
-            window.addEventListener("mousemove", onMouseMove)
+            })
 
             // const onMouseClick = (event) => {
             //     raycaster.setFromCamera(mouse, camera)
@@ -289,10 +287,10 @@ export default function ThreeJSComponent() {
             moveCamera(new THREE.Vector3(3.44, 0.221, -0.13), new THREE.Vector3(0, 0, 0))
 
             return () => {
-                window.removeEventListener("resize", onWindowResize)
-                window.removeEventListener("mousemove", onMouseMove)
+                window.removeEventListener("resize")
+                window.removeEventListener("mousemove")
                 // window.removeEventListener("click", onMouseClick)
-                window.removeEventListener("keydown", onKeyDown)
+                window.removeEventListener("keydown")
                 if (iframeRef.current) {
                     document.body.removeChild(iframeRef.current)
                 }
