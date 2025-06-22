@@ -15,22 +15,23 @@ export default function ThreeJSComponent() {
 
     const moveCamera = (targetVec3, objectVec3) => {
         if (cameraRef.current) {
-        const camera = cameraRef.current;
-        const distance = camera.position.distanceTo(targetVec3);
-        const baseDuration = 2;
-        const speedFactor = 0.2;
-        const duration = baseDuration + distance * speedFactor;
+            const camera = cameraRef.current;
+            const distance = camera.position.distanceTo(targetVec3);
+            const baseDuration = 2;
+            const speedFactor = 0.2;
+            const duration = baseDuration + distance * speedFactor;
 
-        gsap.to(camera.position, {
-            x: targetVec3.x,
-            y: targetVec3.y,
-            z: targetVec3.z,
-            duration,
-            ease: "power2.inOut",
-            onUpdate: () => {
-            camera.updateProjectionMatrix();
-            },
-        });
+            gsap.to(camera.position, {
+                x: targetVec3.x,
+                y: targetVec3.y,
+                z: targetVec3.z,
+                duration,
+                ease: "power2.inOut",
+                onUpdate: () => {
+                    camera.lookAt(objectVec3.x, objectVec3.y, objectVec3.z);
+                    camera.updateProjectionMatrix();
+                }
+            });
         }
     };
 
@@ -51,7 +52,7 @@ export default function ThreeJSComponent() {
     const setAxonView = () => {
         setIframeVisible(false)
         setHotspotVisible(true)
-        moveCamera(new THREE.Vector3(3.16, 3.25, 3.2))
+        moveCamera(new THREE.Vector3(3.16, 3.25, 3.2), new THREE.Vector3(0, 0, 0))
     }
 
     useEffect(() => {
@@ -80,7 +81,7 @@ export default function ThreeJSComponent() {
                 0.001,
                 100000
             )
-            camera.position.set(1.2620118298273393, 2.8424242433860067, -0.06559068747381998)
+            camera.position.set(1.26, 2.84, -0.065)
             camera.rotation.set(0.785, 0.11, -0.11)
             cameraRef.current = camera;
 
@@ -97,8 +98,6 @@ export default function ThreeJSComponent() {
             const mouse = new THREE.Vector2()
 
             const models = []
-            let hoveredObject = null
-            let selectedObject = null
 
             const loadModel = (path, position, redirectPath = "") => {
                 const loader = new PLYLoader()
@@ -250,7 +249,7 @@ export default function ThreeJSComponent() {
                         iframeRef.current.style.display = "none"
                     }
                     selectedObject = null
-                    setIframeVisible(false)
+                    setIframeVisible(true)
                 }
             }
             window.addEventListener("click", onMouseClick)
@@ -284,12 +283,12 @@ export default function ThreeJSComponent() {
             const animate = () => {
                 requestAnimationFrame(animate)
 
-               setHotspots((prev) =>
+                setHotspots((prev) =>
                     prev.map((hotspot) => {
-                    const screenPosition = hotspot.worldPosition.clone().project(camera);
-                    const x = (screenPosition.x + 1) * 0.5 * window.innerWidth;
-                    const y = (-screenPosition.y + 1) * 0.5 * window.innerHeight;
-                    return { ...hotspot, screenPosition: { x, y } };
+                        const screenPosition = hotspot.worldPosition.clone().project(camera);
+                        const x = (screenPosition.x + 1) * 0.5 * window.innerWidth;
+                        const y = (-screenPosition.y + 1) * 0.5 * window.innerHeight;
+                        return { ...hotspot, screenPosition: { x, y } };
                     })
                 );
 
@@ -299,7 +298,7 @@ export default function ThreeJSComponent() {
 
             animate()
 
-            moveCamera(new THREE.Vector3(3.44, 0.221, -0.13))
+            moveCamera(new THREE.Vector3(3.44, 0.221, -0.13), new THREE.Vector3(0, 0, 0))
 
             return () => {
                 window.removeEventListener("resize", onWindowResize)
@@ -331,17 +330,16 @@ export default function ThreeJSComponent() {
                 position: "absolute",
                 left: hotspot.screenPosition.x,
                 top: hotspot.screenPosition.y,
-                width: hotspot.hovered ? "26px" : "20px",
-                height: hotspot.hovered ? "26px" : "20px",
+                width: hotspot.hovered ? "20px" : "15px",
+                height: hotspot.hovered ? "20px" : "15px",
                 backgroundColor: hotspot.hovered ? "orange" : "white",
                 borderRadius: "50%",
                 transform: "translate(-50%, -50%)",
                 cursor: "pointer",
                 zIndex: 10,
-                transition: "all 0.2s ease-in-out",
                 display: hotspotVisible ? "block" : "none"
                 }}
-                onClick={() => moveCamera(hotspot.viewPosition)}
+                onClick={() => moveCamera(hotspot.viewPosition, hotspot.worldPosition)}
                 onMouseEnter={() => {
                 setHotspots((prev) => {
                     const updated = [...prev];
@@ -374,7 +372,6 @@ export default function ThreeJSComponent() {
                 userSelect: "none",
                 zIndex: 10,
                 whiteSpace: "nowrap",
-                transition: "color 0.2s ease-in-out",
                 display: hotspotVisible ? "block" : "none"
                 }}
                 onMouseEnter={() => {
@@ -391,7 +388,7 @@ export default function ThreeJSComponent() {
                     return [...updated];
                 });
                 }}
-                onClick={() => moveCamera(hotspot.viewPosition)}
+                onClick={() => moveCamera(hotspot.viewPosition, hotspot.worldPosition)}
             >
                 {hotspot.label}
             </div>
