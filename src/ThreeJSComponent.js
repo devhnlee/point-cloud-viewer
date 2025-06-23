@@ -87,7 +87,7 @@ export default function ThreeJSComponent() {
     const setEasypairView = () => {
         allModelVisible.current = true
         setHotspotVisible(false)
-        moveCamera(new THREE.Vector3(-5.2, 1.65, 0.01), new THREE.Vector3(-4, 1.55, 0))
+        moveCamera(new THREE.Vector3(-1.2, 1.65, 0.01), new THREE.Vector3(-4, 1.55, 0))
         iframeVisible.current = true
         const easypair = models.current.find(model => model.userData.redirectPath === "easypair")
         updateMaterial(easypair)
@@ -96,7 +96,7 @@ export default function ThreeJSComponent() {
     const setLivingarchiveView = () => {
         allModelVisible.current = true
         setHotspotVisible(false)
-        moveCamera(new THREE.Vector3(-1.88, 3.63, 0.28), new THREE.Vector3(-1.5, 1, 1.4))
+        moveCamera(new THREE.Vector3(-1.6, 1.37, 0.28), new THREE.Vector3(-1.6, 0, 0.285))
         iframeVisible.current = true
         const livingarchive = models.current.find(model => model.userData.redirectPath === "livingarchive")
         updateMaterial(livingarchive)
@@ -309,6 +309,12 @@ export default function ThreeJSComponent() {
                 }
             })
 
+            window.addEventListener("keydown", (event) => {
+                if(event.key == 'C' || event.key == "c") {
+                    console.log(">>> Camera position: ", cameraRef.current.position);
+                }
+            })
+
             const RedirectSubpage = (path) => {
                 window.location.href = domain + path
             }
@@ -337,6 +343,7 @@ export default function ThreeJSComponent() {
                 window.removeEventListener("resize")
                 window.removeEventListener("mousemove")
                 window.removeEventListener("click")
+                window.removeEventListener("keydown")
                 if (iframeRef.current) {
                     document.body.removeChild(iframeRef.current)
                 }
