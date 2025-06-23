@@ -25,7 +25,7 @@ export default function ThreeJSComponent() {
         if (cameraRef.current) {
             const camera = cameraRef.current
             const distance = camera.position.distanceTo(dstPosition)
-            const baseDuration = 2
+            const baseDuration = 3
             const speedFactor = 0.2
             const duration = baseDuration + distance * speedFactor
 
@@ -67,9 +67,9 @@ export default function ThreeJSComponent() {
         target.material.needsUpdate = true
         models.current.forEach((model) => {
             if (model !== target) {
-                model.material.opacity = 0.1
-                model.material.size = 0.001
-                model.material.vertexColors = false
+                model.material.opacity = 0.5
+                model.material.size = 0.007
+                model.material.vertexColors = true
                 model.material.needsUpdate = true
             }
         })
@@ -78,7 +78,7 @@ export default function ThreeJSComponent() {
     const setObsmView = () => {
         allModelVisible.current = true
         setHotspotVisible(false)
-        moveCamera(new THREE.Vector3(0.1, 0.69, 0.326), new THREE.Vector3(0.8, -0.5, 2.3))
+        moveCamera(new THREE.Vector3(0.48, 0.177, 0.38), new THREE.Vector3(0.7, -0.5, 2.3))
         iframeVisible.current = true
         const obsm = models.current.find(model => model.userData.redirectPath === "obsm")
         updateMaterial(obsm)
@@ -87,7 +87,7 @@ export default function ThreeJSComponent() {
     const setEasypairView = () => {
         allModelVisible.current = true
         setHotspotVisible(false)
-        moveCamera(new THREE.Vector3(-1.2, 1.65, 0.01), new THREE.Vector3(-4, 1.55, 0))
+        moveCamera(new THREE.Vector3(-2.5, 1.65, 0.01), new THREE.Vector3(-4, 1.55, 0))
         iframeVisible.current = true
         const easypair = models.current.find(model => model.userData.redirectPath === "easypair")
         updateMaterial(easypair)
@@ -96,7 +96,8 @@ export default function ThreeJSComponent() {
     const setLivingarchiveView = () => {
         allModelVisible.current = true
         setHotspotVisible(false)
-        moveCamera(new THREE.Vector3(-1.6, 1.37, 0.28), new THREE.Vector3(-1.6, 0, 0.285))
+        moveCamera(new THREE.Vector3(-1.45, 1.94, 0.25), new THREE.Vector3(-1.45, 1, 0.25))
+        // moveCamera(new THREE.Vector3(-1.45, 1.94, 0.25), new THREE.Vector3(1.57, 6.46, 0.0064))
         iframeVisible.current = true
         const livingarchive = models.current.find(model => model.userData.redirectPath === "livingarchive")
         updateMaterial(livingarchive)
@@ -105,7 +106,7 @@ export default function ThreeJSComponent() {
     const setSpatialWellnessView = () => {
         allModelVisible.current = true
         setHotspotVisible(false)
-        moveCamera(new THREE.Vector3(-0.7, 1.2, -3.58), new THREE.Vector3(-0.6, 0.75, -1.25))
+        moveCamera(new THREE.Vector3(-0.64, 0.23, -2.08), new THREE.Vector3(-0.51, 0.15, -0.824))
         iframeVisible.current = true
         const spatialwellness = models.current.find(model => model.userData.redirectPath === "spatialwellness")
         updateMaterial(spatialwellness)
@@ -137,7 +138,7 @@ export default function ThreeJSComponent() {
                 0.001,
                 100000
             )
-            camera.position.set(1.26, 2.84, -0.065)
+            camera.position.set(1.17, 0.07, -0.044)
             cameraRef.current = camera
 
             const renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -151,7 +152,6 @@ export default function ThreeJSComponent() {
 
             const raycaster = new THREE.Raycaster()
             const mouse = new THREE.Vector2()
-
 
             const loadModel = (path, position, redirectPath = "") => {
                 const loader = new PLYLoader()
@@ -256,7 +256,7 @@ export default function ThreeJSComponent() {
                         models.current.forEach((model) => {
                             if (model !== hoveredObject) {
                                 model.material.size = 0.001
-                                model.material.opacity = 0.1
+                                model.material.opacity = 0.25
                                 model.material.vertexColors = false
                             }
                         })
@@ -276,42 +276,75 @@ export default function ThreeJSComponent() {
 
                 if (!iframeVisible.current) return
 
+                // Close iframe if already open
                 if (iframeRef.current) {
                     iframeRef.current.style.display = "none"
                     selectedObject = null
+                    iframeRef.current.remove() // clean up
                     iframeRef.current = null
-                } else if (intersects.length > 0) {
-                    const redirectPath = intersects[0].object.userData.redirectPath
-                    let container2 = document.createElement("iframe")
-                    if (redirectPath !== "") {
-                        iframeRef.current = document.createElement("div")
-                        iframeRef.current.appendChild(container2)
-                        container2.style.width = "100%"
-                        container2.style.height = "100%"
-                        iframeRef.current.setAttribute(
-                            "id",
-                            "subpage_iframe"
-                        )
-                        iframeRef.current.style.opacity = "0.8"
-                        iframeRef.current.style.position = "fixed"
-                        iframeRef.current.style.border = "1px solid #ccc"
-                        iframeRef.current.style.boxShadow =
-                            "0 4px 8px rgba(0, 0, 0, 0.1)"
-                        iframeRef.current.style.zIndex = "1000"
-                        document.body.appendChild(iframeRef.current)
-                        container2.src = domain + redirectPath
-                        iframeRef.current.style.display = "block"
-                        const tempObject = intersects[0].object
-                        selectedObject = tempObject
+                    return
+                }
 
-                        updateIframeStyle()
-                    }
+                // Open new iframe if intersection is detected
+                if (intersects.length > 0) {
+                    const redirectPath = intersects[0].object.userData.redirectPath
+                    if (redirectPath === "") return
+
+                    const targetURL = domain + redirectPath
+
+                    // Create iframe container
+                    iframeRef.current = document.createElement("div")
+                    iframeRef.current.setAttribute("id", "subpage_iframe")
+                    iframeRef.current.style.position = "fixed"
+                    iframeRef.current.style.top = "0"
+                    iframeRef.current.style.left = "0"
+                    iframeRef.current.style.width = "100vw"
+                    iframeRef.current.style.height = "100vh"
+                    iframeRef.current.style.zIndex = "1000"
+                    iframeRef.current.style.border = "1px solid #ccc"
+                    iframeRef.current.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)"
+                    iframeRef.current.style.opacity = "0.8"
+                    iframeRef.current.style.display = "block"
+
+                    // Create iframe element
+                    const iframeElement = document.createElement("iframe")
+                    iframeElement.src = targetURL
+                    iframeElement.style.width = "100%"
+                    iframeElement.style.height = "100%"
+                    iframeElement.style.border = "none"
+
+                    // Create transparent overlay to capture click
+                    const overlay = document.createElement("div")
+                    overlay.style.position = "absolute"
+                    overlay.style.top = "0"
+                    overlay.style.left = "0"
+                    overlay.style.width = "100%"
+                    overlay.style.height = "100%"
+                    overlay.style.zIndex = "1001"
+                    overlay.style.cursor = "pointer"
+                    overlay.style.background = "transparent"
+
+                    overlay.addEventListener("click", () => {
+                        window.open(targetURL, "_blank")
+                    })
+
+                    // Append elements
+                    iframeRef.current.appendChild(iframeElement)
+                    iframeRef.current.appendChild(overlay)
+                    document.body.appendChild(iframeRef.current)
+
+                    // Save selected object
+                    selectedObject = intersects[0].object
+
+                    updateIframeStyle()
                 }
             })
+
 
             window.addEventListener("keydown", (event) => {
                 if(event.key == 'C' || event.key == "c") {
                     console.log(">>> Camera position: ", cameraRef.current.position);
+                    console.log(">>> Camera rotation: ", cameraRef.current.rotation);
                 }
             })
 
@@ -366,9 +399,9 @@ export default function ThreeJSComponent() {
                     position: "absolute",
                     left: hotspot.screenPosition.x,
                     top: hotspot.screenPosition.y,
-                    width: hotspot.hovered ? "15px" : "13px",
-                    height: hotspot.hovered ? "15px" : "13px",
-                    backgroundColor: hotspot.hovered ? "orange" : "#ff6600",
+                    width: hotspot.hovered ? "18px" : "15px",
+                    height: hotspot.hovered ? "18px" : "15px",
+                    backgroundColor: hotspot.hovered ? "orange" : "red",
                     boxShadow: hotspot.hovered ? "0 0 10px rgba(255, 102, 0, 0.5)" : "none",
                     border: "2px solid #fff",
                     borderRadius: "50%",
