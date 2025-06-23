@@ -12,12 +12,12 @@ export default function ThreeJSComponent() {
     const allModelVisible = useRef(true)
     const iframeVisible = useRef(false)
     const models = useRef([])
+    const controls = useRef(null)
 
     const domain = "https://novel-head-392156.framer.app/"
     const [hotspotVisible, setHotspotVisible] = useState(false)
     const [hotspots, setHotspots] = useState([])
 
-    let controls;
     let hoveredObject = null
     let selectedObject = null
 
@@ -37,7 +37,7 @@ export default function ThreeJSComponent() {
                 ease: "power2.inOut",
             })
 
-            gsap.to(controls.target, {
+            gsap.to(controls.current.target, {
                 x: dstTarget.x,
                 y: dstTarget.y,
                 z: dstTarget.z,
@@ -146,8 +146,8 @@ export default function ThreeJSComponent() {
             const container = containerRef.current
             container.appendChild(renderer.domElement)
 
-            controls = new OrbitControls(camera, renderer.domElement)
-            controls.enableDamping = true
+            controls.current = new OrbitControls(camera, renderer.domElement)
+            controls.current.enableDamping = true
 
             const raycaster = new THREE.Raycaster()
             const mouse = new THREE.Vector2()
@@ -325,7 +325,7 @@ export default function ThreeJSComponent() {
                     })
                 )
 
-                controls.update()
+                controls.current.update()
                 renderer.render(scene, camera)
             }
 
