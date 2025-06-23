@@ -235,7 +235,7 @@ export default function ThreeJSComponent() {
                 mouse.x = (event.clientX / window.innerWidth) * 2 - 1
                 mouse.y = -(event.clientY / window.innerHeight) * 2 + 1.3
 
-                if (allModelVisible.current) return
+                if (allModelVisible.current || event.buttons !== 0 ) return
 
                 raycaster.setFromCamera(mouse, camera)
                 const intersects = raycaster.intersectObjects(models.current)
