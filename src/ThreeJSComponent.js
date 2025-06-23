@@ -4,6 +4,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 import { PLYLoader } from "three/addons/loaders/PLYLoader.js"
 import { gsap } from "gsap"
 
+
 export default function ThreeJSComponent() {
     const containerRef = useRef(null)
     const iframeRef = useRef(null)
@@ -16,27 +17,32 @@ export default function ThreeJSComponent() {
     const [hotspotVisible, setHotspotVisible] = useState(false)
     const [hotspots, setHotspots] = useState([])
 
+    let controls;
     let hoveredObject = null
     let selectedObject = null
 
-    const moveCamera = (targetVec3, objectVec3) => {
+    const moveCamera = (dstPosition, dstTarget) => {
         if (cameraRef.current) {
             const camera = cameraRef.current
-            const distance = camera.position.distanceTo(targetVec3)
+            const distance = camera.position.distanceTo(dstPosition)
             const baseDuration = 2
             const speedFactor = 0.2
             const duration = baseDuration + distance * speedFactor
 
             gsap.to(camera.position, {
-                x: targetVec3.x,
-                y: targetVec3.y,
-                z: targetVec3.z,
+                x: dstPosition.x,
+                y: dstPosition.y,
+                z: dstPosition.z,
                 duration,
                 ease: "power2.inOut",
-                onUpdate: () => {
-                    camera.lookAt(objectVec3)
-                    camera.updateProjectionMatrix()
-                }
+            })
+
+            gsap.to(controls.target, {
+                x: dstTarget.x,
+                y: dstTarget.y,
+                z: dstTarget.z,
+                duration,
+                ease: "power2.inOut",
             })
         }
     }
@@ -140,7 +146,7 @@ export default function ThreeJSComponent() {
             const container = containerRef.current
             container.appendChild(renderer.domElement)
 
-            const controls = new OrbitControls(camera, renderer.domElement)
+            controls = new OrbitControls(camera, renderer.domElement)
             controls.enableDamping = true
 
             const raycaster = new THREE.Raycaster()
