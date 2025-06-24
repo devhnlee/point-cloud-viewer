@@ -165,6 +165,7 @@ export default function ThreeJSComponent() {
             controls.current.enableDamping = true
 
             const raycaster = new THREE.Raycaster()
+            raycaster.params.Points.threshold = 0.05;
             const mouse = new THREE.Vector2()
 
             const loadModel = (path, position, redirectPath = "") => {
