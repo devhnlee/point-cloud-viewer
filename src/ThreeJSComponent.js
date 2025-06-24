@@ -242,14 +242,33 @@ export default function ThreeJSComponent() {
             })
 
             const updateIframeStyle = () => {
-                if (iframeRef.current) {
-                    const width = Math.min(window.innerWidth * 0.8, 600)
-                    const height = Math.min(window.innerHeight * 0.6, 400)
-                    iframeRef.current.style.width = `${width}px`
-                    iframeRef.current.style.height = `${height}px`
-                    iframeRef.current.style.left = `calc(50% - ${width / 2}px)`
-                    iframeRef.current.style.top = `calc(50% - ${height / 2}px)`
+                if (!iframeRef.current) return;
+
+                const vw = window.innerWidth;
+                const vh = window.innerHeight;
+
+                let width, height;
+
+                // Mobile (<=768px): portrait aspect (400x600)
+                if (vw <= 768) {
+                    width = 400;
+                    height = 600;
                 }
+                // Tablet (<=1024px): landscape aspect (600x400)
+                else if (vw <= 1024) {
+                    width = 600;
+                    height = 400;
+                }
+                // Desktop: larger iframe (800x450 or fit in viewport)
+                else {
+                    width = Math.min(800, vw * 0.8);
+                    height = Math.min(450, vh * 0.8);
+                }
+
+                iframeRef.current.style.width = `${width}px`
+                iframeRef.current.style.height = `${height}px`
+                iframeRef.current.style.left = `calc(50% - ${width / 2}px)`
+                iframeRef.current.style.top = `calc(50% - ${height / 2}px)`
             }
 
             window.addEventListener("mousemove", (event) => {
@@ -340,7 +359,7 @@ export default function ThreeJSComponent() {
                     overlay.style.background = "transparent"
 
                     overlay.addEventListener("click", () => {
-                        window.open(targetURL, "_blank")
+                        window.open(targetURL, "_self")
                     })
 
                     // Append elements
@@ -362,10 +381,6 @@ export default function ThreeJSComponent() {
                     console.log(">>> Camera rotation: ", cameraRef.current.rotation);
                 }
             })
-
-            const RedirectSubpage = (path) => {
-                window.location.href = domain + path
-            }
 
             const animate = () => {
                 requestAnimationFrame(animate)
