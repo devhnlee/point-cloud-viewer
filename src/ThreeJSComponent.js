@@ -21,11 +21,10 @@ export default function ThreeJSComponent() {
     let hoveredObject = null
     let selectedObject = null
 
-    const moveCamera = (dstPosition, dstTarget) => {
+    const moveCamera = (dstPosition, dstTarget, baseDuration, ease) => {
         if (cameraRef.current) {
             const camera = cameraRef.current
             const distance = camera.position.distanceTo(dstPosition)
-            const baseDuration = 3
             const speedFactor = 0.2
             const duration = baseDuration + distance * speedFactor
 
@@ -34,7 +33,7 @@ export default function ThreeJSComponent() {
                 y: dstPosition.y,
                 z: dstPosition.z,
                 duration,
-                ease: "power2.inOut",
+                ease: ease,
             })
 
             gsap.to(controls.current.target, {
