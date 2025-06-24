@@ -213,7 +213,7 @@ export default function ThreeJSComponent() {
 
             const hotspotList = [
                 { label: "spatial wellness", worldPosition: new THREE.Vector3(-0.7, 1.2, -2), action: setSpatialWellnessView },
-                { label: "obsm", worldPosition: new THREE.Vector3(0.8, -0.5, 2.3), action: setObsmView },
+                { label: "osbm", worldPosition: new THREE.Vector3(0.8, -0.5, 2.3), action: setOsbmView },
                 { label: "easy pair", worldPosition: new THREE.Vector3(-4, 1.55, 0), action: setEasypairView },
                 { label: "living archive", worldPosition: new THREE.Vector3(-1.5, 1, 1.4), action: setLivingarchiveView },
             ]
