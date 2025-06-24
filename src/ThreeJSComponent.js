@@ -109,7 +109,7 @@ export default function ThreeJSComponent() {
         allModelVisible.current = true
         setHotspotVisible(false)
         hideIframe()
-        moveCamera(new THREE.Vector3(-1.45, 1.94, 0.25), new THREE.Vector3(-1.45, 1, 0.249), 2.5, "power2.inOut")
+        moveCamera(new THREE.Vector3(-2.435, 1.316, 0.015), new THREE.Vector3(-2.06, 0.81, 0.508), 2.5, "power2.inOut")
         // moveCamera(new THREE.Vector3(-1.45, 1.94, 0.25), new THREE.Vector3(1.57, 6.46, 0.0064), 2.5, "power2.inOut")
         iframeVisible.current = true
         const livingarchive = models.current.find(model => model.userData.redirectPath === "livingarchive")
@@ -206,7 +206,7 @@ export default function ThreeJSComponent() {
                 "easypair"
             )
             loadModel(
-                "https://raw.githubusercontent.com/Fredge69/CoAl_Website/main/living archive_PC.ply",
+                "https://raw.githubusercontent.com/Fredge69/CoAl_Website/main/living archive_UPDATE_PC.ply",
                 new THREE.Vector3(0, 0, 0),
                 "livingarchive"
             )
