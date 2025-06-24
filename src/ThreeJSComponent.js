@@ -41,22 +41,9 @@ export default function ThreeJSComponent() {
                 y: dstTarget.y,
                 z: dstTarget.z,
                 duration,
-                ease: "power2.inOut",
+                ease: ease,
             })
         }
-    }
-
-    const setAxonView = () => {
-        allModelVisible.current = false
-        iframeVisible.current = false
-        setHotspotVisible(true)
-        moveCamera(new THREE.Vector3(3.16, 3.25, 3.2), new THREE.Vector3(0, 0, 0))
-        models.current.forEach((model) => {
-            model.material.opacity = 1
-            model.material.size = 0.01
-            model.material.vertexColors = true
-            model.material.needsUpdate = true
-        })
     }
 
     const updateMaterial = (target) => {
@@ -74,19 +61,45 @@ export default function ThreeJSComponent() {
         })
     }
 
-    const setObsmView = () => {
+    const hideIframe = () => {
+        if (iframeRef.current) {
+            iframeRef.current.style.display = "none"
+            selectedObject = null
+            iframeRef.current.remove() // clean up
+            iframeRef.current = null
+            return
+        }
+    }
+
+    const setAxonView = () => {
+        allModelVisible.current = false
+        iframeVisible.current = false
+        setHotspotVisible(true)
+        hideIframe()
+        moveCamera(new THREE.Vector3(3.16, 3.25, 3.2), new THREE.Vector3(0, 0, 0), 2.5, "power2.inOut")
+        models.current.forEach((model) => {
+            model.material.opacity = 1
+            model.material.size = 0.01
+            model.material.vertexColors = true
+            model.material.needsUpdate = true
+        })
+    }
+
+    const setOsbmView = () => {
         allModelVisible.current = true
         setHotspotVisible(false)
-        moveCamera(new THREE.Vector3(0.48, 0.177, 0.38), new THREE.Vector3(0.7, -0.5, 2.3))
+        hideIframe()
+        moveCamera(new THREE.Vector3(0.48, 0.177, 0.38), new THREE.Vector3(0.7, -0.5, 2.3), 2.5, "power2.inOut")
         iframeVisible.current = true
-        const obsm = models.current.find(model => model.userData.redirectPath === "obsm")
-        updateMaterial(obsm)
+        const osbm = models.current.find(model => model.userData.redirectPath === "osbm")
+        updateMaterial(osbm)
     }
 
     const setEasypairView = () => {
         allModelVisible.current = true
         setHotspotVisible(false)
-        moveCamera(new THREE.Vector3(-2.5, 1.65, 0.01), new THREE.Vector3(-4, 1.55, 0))
+        hideIframe()
+        moveCamera(new THREE.Vector3(-2.5, 1.65, 0.01), new THREE.Vector3(-4, 1.55, 0), 2.5, "power2.inOut")
         iframeVisible.current = true
         const easypair = models.current.find(model => model.userData.redirectPath === "easypair")
         updateMaterial(easypair)
@@ -95,8 +108,9 @@ export default function ThreeJSComponent() {
     const setLivingarchiveView = () => {
         allModelVisible.current = true
         setHotspotVisible(false)
-        moveCamera(new THREE.Vector3(-1.45, 1.94, 0.25), new THREE.Vector3(-1.45, 1, 0.25))
-        // moveCamera(new THREE.Vector3(-1.45, 1.94, 0.25), new THREE.Vector3(1.57, 6.46, 0.0064))
+        hideIframe()
+        moveCamera(new THREE.Vector3(-1.45, 1.94, 0.25), new THREE.Vector3(-1.45, 1, 0.249), 2.5, "power2.inOut")
+        // moveCamera(new THREE.Vector3(-1.45, 1.94, 0.25), new THREE.Vector3(1.57, 6.46, 0.0064), 2.5, "power2.inOut")
         iframeVisible.current = true
         const livingarchive = models.current.find(model => model.userData.redirectPath === "livingarchive")
         updateMaterial(livingarchive)
@@ -105,7 +119,8 @@ export default function ThreeJSComponent() {
     const setSpatialWellnessView = () => {
         allModelVisible.current = true
         setHotspotVisible(false)
-        moveCamera(new THREE.Vector3(-0.64, 0.23, -2.08), new THREE.Vector3(-0.51, 0.15, -0.824))
+        hideIframe()
+        moveCamera(new THREE.Vector3(-0.64, 0.23, -2.08), new THREE.Vector3(-0.51, 0.15, -0.824), 2.5, "power2.inOut")
         iframeVisible.current = true
         const spatialwellness = models.current.find(model => model.userData.redirectPath === "spatialwellness")
         updateMaterial(spatialwellness)
@@ -369,7 +384,7 @@ export default function ThreeJSComponent() {
 
             animate()
 
-            moveCamera(new THREE.Vector3(3.44, 0.221, -0.13), new THREE.Vector3(0, 0, 0))
+            moveCamera(new THREE.Vector3(3.44, 0.221, -0.13), new THREE.Vector3(0, 0, 0), 5, "linear")
 
             return () => {
                 window.removeEventListener("resize")
