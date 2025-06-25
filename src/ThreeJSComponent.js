@@ -110,7 +110,6 @@ export default function ThreeJSComponent() {
         setHotspotVisible(false)
         hideIframe()
         moveCamera(new THREE.Vector3(-2.435, 1.316, 0.015), new THREE.Vector3(-2.06, 0.81, 0.508), 2.5, "power2.inOut")
-        // moveCamera(new THREE.Vector3(-1.45, 1.94, 0.25), new THREE.Vector3(1.57, 6.46, 0.0064), 2.5, "power2.inOut")
         iframeVisible.current = true
         const livingarchive = models.current.find(model => model.userData.redirectPath === "livingarchive")
         updateMaterial(livingarchive)
@@ -129,16 +128,7 @@ export default function ThreeJSComponent() {
     useEffect(() => {
         if (!containerRef.current || containerRef.current.querySelector("canvas")) return // TODO: need to remove this guard before deployment
 
-        // const loadPLYLoader = async () => {
-        //     const { PLYLoader } = await import(
-        //         "https://unpkg.com/three@0.152.2/examples/jsm/loaders/PLYLoader.js"
-        //     )
-        //     return PLYLoader
-        // }
-
         const init = async () => {
-            // const PLYLoader = await loadPLYLoader()
-
             const scene = new THREE.Scene()
 
             const light = new THREE.SpotLight()
@@ -198,7 +188,7 @@ export default function ThreeJSComponent() {
             loadModel(
                 "https://raw.githubusercontent.com/Fredge69/CoAl_Website/main/osbm_PC.ply",
                 new THREE.Vector3(0, 0, 0),
-                "obsm"
+                "osbm"
             )
             loadModel(
                 "https://raw.githubusercontent.com/Fredge69/CoAl_Website/main/easy pair_PC.ply",
@@ -342,7 +332,7 @@ export default function ThreeJSComponent() {
 
                     // Create iframe element
                     const iframeElement = document.createElement("iframe")
-                    iframeElement.src = targetURL
+                    iframeElement.src = targetURL + "-thumbnail"
                     iframeElement.style.width = "100%"
                     iframeElement.style.height = "100%"
                     iframeElement.style.border = "none"
