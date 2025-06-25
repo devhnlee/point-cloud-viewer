@@ -471,14 +471,14 @@ export default function ThreeJSComponent() {
                 onMouseEnter={() => {
                     setHotspots((prev) => {
                         const updated = [...prev];
-                        updated[idx] = { ...updated[idx], hovered: true }
+                        updated[idx] = { ...updated[idx], labelHovered: true }
                         return updated
                     })
                 }}
                 onMouseLeave={() => {
                     setHotspots((prev) => {
                         const updated = [...prev];
-                        updated[idx] = { ...updated[idx], hovered: false }
+                        updated[idx] = { ...updated[idx], labelHovered: false }
                         return updated
                     })
                 }}
