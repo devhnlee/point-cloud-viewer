@@ -13,7 +13,7 @@ export default function ThreeJSComponent(props) {
     const models = useRef<THREE.Mesh[]>([])
     const controls = useRef<any>(null)
 
-    const domain = "https://novel-head-392156.framer.app/"
+    const domain = "https://co-al.xyz/"
     const [hotspotVisible, setHotspotVisible] = useState<boolean>(false)
 
     interface Hotspot {
@@ -416,13 +416,12 @@ export default function ThreeJSComponent(props) {
                 }
             })
 
-            window.addEventListener("click", (event) => {
+            window.addEventListener("pointerdown", (event) => {
                 raycaster.setFromCamera(mouse, camera)
                 const intersects = raycaster.intersectObjects(models.current)
                 const currentWindowURL = window.location.href
-                const pageURL = currentWindowURL.split(domain)[1]
 
-                // if (!iframeVisible.current || pageURL !== "model-test") return
+                // if (!iframeVisible.current || currentWindowURL !== domain) return
                 if (!iframeVisible.current) return
 
                 // Close iframe if already open
@@ -472,7 +471,7 @@ export default function ThreeJSComponent(props) {
                     overlay.style.cursor = "pointer"
                     overlay.style.background = "transparent"
 
-                    overlay.addEventListener("click", () => {
+                    overlay.addEventListener("pointerdown", () => {
                         window.open(targetURL, "_self")
                     })
 
@@ -520,7 +519,7 @@ export default function ThreeJSComponent(props) {
             return () => {
                 window.removeEventListener("resize")
                 window.removeEventListener("mousemove")
-                window.removeEventListener("click")
+                window.removeEventListener("pointerdown")
                 if (iframeRef.current) {
                     document.body.removeChild(iframeRef.current)
                 }
@@ -576,7 +575,7 @@ export default function ThreeJSComponent(props) {
                             zIndex: 10,
                             display: hotspotVisible ? "block" : "none",
                         }}
-                        onClick={(e) => {
+                        onPointerDown={(e) => {
                             e.stopPropagation()
                             hotspot.action()
                         }}
@@ -640,7 +639,7 @@ export default function ThreeJSComponent(props) {
                                 return updated
                             })
                         }}
-                        onClick={(e) => {
+                        onPointerDown={(e) => {
                             e.stopPropagation()
                             hotspot.action()
                         }}

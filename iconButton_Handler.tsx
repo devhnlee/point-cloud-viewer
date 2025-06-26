@@ -54,8 +54,9 @@ export function withIconButtonClick(Component): ComponentType {
             <Component
                 ref={ref}
                 {...props}
-                onClick={(e) => {
+                onPointerDown={(e) => {
                     e.stopPropagation()
+                    e.preventDefault()
                     const event = new CustomEvent("iconButtonClicked", {
                         detail: "iconButton",
                     })
@@ -74,8 +75,9 @@ export function withOsbmClick(Component): ComponentType {
             <Component
                 ref={ref}
                 {...props}
-                onClick={(e) => {
+                onPointerDown={(e) => {
                     e.stopPropagation()
+                    e.preventDefault()
                     const event = new CustomEvent("osbmClicked", {
                         detail: "obsm",
                     })
@@ -94,8 +96,9 @@ export function withSpatialwellnessClick(Component): ComponentType {
             <Component
                 ref={ref}
                 {...props}
-                onClick={(e) => {
+                onPointerDown={(e) => {
                     e.stopPropagation()
+                    e.preventDefault()
                     const event = new CustomEvent("spatialwellnessClicked", {
                         detail: "spatialwellness",
                     })
@@ -114,8 +117,9 @@ export function withLivingarchiveClick(Component): ComponentType {
             <Component
                 ref={ref}
                 {...props}
-                onClick={(e) => {
+                onPointerDown={(e) => {
                     e.stopPropagation()
+                    e.preventDefault()
                     const event = new CustomEvent("livingarchiveClicked", {
                         detail: "livingarchive",
                     })
@@ -134,8 +138,9 @@ export function withEasypairClick(Component): ComponentType {
             <Component
                 ref={ref}
                 {...props}
-                onClick={(e) => {
+                onPointerDown={(e) => {
                     e.stopPropagation()
+                    e.preventDefault()
                     const event = new CustomEvent("easypairClicked", {
                         detail: "easypair",
                     })
