@@ -176,27 +176,27 @@ export default function ThreeJSComponent() {
 
             // Load multiple models
             loadModel(
-                "https://raw.githubusercontent.com/Fredge69/CoAl_Website/main/street_PC.ply",
+                "https://raw.githubusercontent.com/devhnlee/point-cloud-viewer-framer/main/assets/street_PC.ply",
                 new THREE.Vector3(0, 0, 0),
                 ""
             )
             loadModel(
-                "https://raw.githubusercontent.com/Fredge69/CoAl_Website/main/spatial wellness_PC.ply",
+                "https://raw.githubusercontent.com/devhnlee/point-cloud-viewer-framer/main/assets/spatial wellness_PC.ply",
                 new THREE.Vector3(0, 0, 0),
                 "spatialwellness"
             )
             loadModel(
-                "https://raw.githubusercontent.com/Fredge69/CoAl_Website/main/osbm_PC.ply",
+                "https://raw.githubusercontent.com/devhnlee/point-cloud-viewer-framer/main/assets/osbm_PC.ply",
                 new THREE.Vector3(0, 0, 0),
                 "osbm"
             )
             loadModel(
-                "https://raw.githubusercontent.com/Fredge69/CoAl_Website/main/easy pair_PC.ply",
+                "https://raw.githubusercontent.com/devhnlee/point-cloud-viewer-framer/main/assets/easy%20pair_PC.ply",
                 new THREE.Vector3(0, 0, 0),
                 "easypair"
             )
             loadModel(
-                "https://raw.githubusercontent.com/Fredge69/CoAl_Website/main/living archive_UPDATE_PC.ply",
+                "https://raw.githubusercontent.com/devhnlee/point-cloud-viewer-framer/main/assets/living archive_UPDATE_PC.ply",
                 new THREE.Vector3(0, 0, 0),
                 "livingarchive"
             )
